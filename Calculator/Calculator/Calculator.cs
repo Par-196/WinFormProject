@@ -102,9 +102,12 @@ namespace Calculator
 
         private void backspace_button_Click(object sender, EventArgs e)
         {
-            if (symbol_screen.Text == "")
+            if (main_screen.Text.Length > 1)
             {
-                main_screen.Text = main_screen.Text.Substring(0, main_screen.Text.Length - 1);
+                if (symbol_screen.Text == "" || !clearMainScreen)
+                {
+                    main_screen.Text = main_screen.Text.Substring(0, main_screen.Text.Length - 1);
+                }
             }
         }
 
@@ -118,7 +121,7 @@ namespace Calculator
 
         private void add_button_Click(object sender, EventArgs e)
         {
-            if (main_screen.Text != history_screen.Text && history_screen.Text != "")
+            if (history_screen.Text != "")
             {
                 CalculationOfFields();
             }
@@ -129,7 +132,7 @@ namespace Calculator
 
         private void subtract_button_Click(object sender, EventArgs e)
         {
-            if (main_screen.Text != history_screen.Text && history_screen.Text != "")
+            if (history_screen.Text != "")
             {
                 CalculationOfFields();
             }
@@ -140,7 +143,7 @@ namespace Calculator
 
         private void multiply_button_Click(object sender, EventArgs e)
         {
-            if (main_screen.Text != history_screen.Text && history_screen.Text != "")
+            if (history_screen.Text != "")
             {
                 CalculationOfFields();
             }
@@ -151,7 +154,7 @@ namespace Calculator
 
         private void divide_button_Click(object sender, EventArgs e)
         {
-            if (main_screen.Text != history_screen.Text && history_screen.Text != "")
+            if (history_screen.Text != "")
             {
                 CalculationOfFields();
             }
@@ -173,7 +176,9 @@ namespace Calculator
 
         private void EraseTheMainField()
         {
-            if (clearMainScreen || main_screen.Text[0] == '0')
+            if (main_screen.Text.Length > 1 && main_screen.Text[0] == '0' && main_screen.Text[1] == ',')
+                return;
+            else if (clearMainScreen || main_screen.Text[0] == '0')
             {
                 main_screen.Text = "";
                 clearMainScreen = false;
@@ -214,7 +219,10 @@ namespace Calculator
                         break;
                     case "/":
                         {
-                            result = history_screen_number / main_screen_number;
+                            if (main_screen.Text[0] != '0' && main_screen.Text.Length < 1)
+                            {
+                                result = history_screen_number / main_screen_number;
+                            }
                         }
                         break;
                 }
@@ -226,12 +234,27 @@ namespace Calculator
 
         private void swap_symbol_button_Click(object sender, EventArgs e)
         {
-
+            main_screen.Text = (-decimal.Parse(main_screen.Text)).ToString();
         }
 
         private void comma_button_Click(object sender, EventArgs e)
         {
+            if (FindAComma())
+            {
+                main_screen.Text += ",";
+            }
+        }
 
+        private bool FindAComma()
+        {
+            foreach (var item in main_screen.Text)
+            {
+                if (item == ',')
+                { 
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -273,12 +296,6 @@ namespace Calculator
         {
 
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -286,6 +303,18 @@ namespace Calculator
 
         private void square_root_button_Click_1(object sender, EventArgs e)
         {
+            decimal main_screen_number = decimal.Parse(main_screen.Text);
+            if (main_screen_number / 2 == -1)
+            { 
+                
+            }
+        }
+
+        private void Squaring(object sender, EventArgs e)
+        {
+            decimal main_screen_number = decimal.Parse(main_screen.Text);
+            main_screen_number *= main_screen_number;
+            main_screen.Text = main_screen_number.ToString();
         }
     }
 }

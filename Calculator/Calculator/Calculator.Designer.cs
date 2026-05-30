@@ -251,7 +251,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1.ForeColor = System.Drawing.SystemColors.Control;
-            this.button1.Location = new System.Drawing.Point(6, 172);
+            this.button1.Location = new System.Drawing.Point(5, 171);
             this.button1.Name = "button1";
             this.button1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.button1.Size = new System.Drawing.Size(82, 48);
@@ -273,7 +273,7 @@
             this.button2.TabIndex = 15;
             this.button2.Text = "x^2";
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Squaring);
             // 
             // equals_button
             // 
@@ -389,12 +389,12 @@
             this.square_root_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.square_root_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.square_root_button.ForeColor = System.Drawing.SystemColors.Control;
-            this.square_root_button.Location = new System.Drawing.Point(172, 172);
+            this.square_root_button.Location = new System.Drawing.Point(171, 171);
             this.square_root_button.Name = "square_root_button";
             this.square_root_button.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.square_root_button.Size = new System.Drawing.Size(82, 48);
             this.square_root_button.TabIndex = 26;
-            this.square_root_button.Text = "2/n";
+            this.square_root_button.Text = "√n";
             this.square_root_button.UseVisualStyleBackColor = false;
             this.square_root_button.Click += new System.EventHandler(this.square_root_button_Click_1);
             // 
@@ -520,9 +520,10 @@
             this.history_screen.ForeColor = System.Drawing.SystemColors.Control;
             this.history_screen.Location = new System.Drawing.Point(12, 3);
             this.history_screen.Name = "history_screen";
+            this.history_screen.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.history_screen.Size = new System.Drawing.Size(293, 30);
             this.history_screen.TabIndex = 34;
-            this.history_screen.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.history_screen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // main_screen
             // 

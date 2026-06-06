@@ -16,5 +16,15 @@ namespace TestsCreation
         {
             InitializeComponent();
         }
+
+        private void Next_Click(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3();
+            form3.Dock = DockStyle.Fill;
+            form3.TopLevel = false;
+            MainForm.MainPanel.Controls.Clear();
+            MainForm.MainPanel.Controls.Add(form3);
+            form3.Show();
+        }
     }
 }

@@ -8,13 +8,14 @@ namespace TestsCreation.Models
 {
     public class Respond
     {
-        public string Answer { get; set; }
-        public bool Boolean { get; set; }
+        private bool Boolean { get; set; }
+        private string Answer { get; set; }
+        
 
-        public Respond(string answer, bool boolean)
+        public Respond(bool boolean, string answer)
         {
+            Boolean = boolean; 
             Answer = answer;
-            Boolean = boolean;
         }
     }
 }

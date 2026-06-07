@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using System.Timers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,21 +11,29 @@ namespace TestsCreation.Models
     public class Test
     {
         [JsonProperty("TestName")]
-        public string TestName { get; set; }
+        private string TestName { get; set; }
         [JsonProperty("Time")]
-        public int Time { get; set; }
+        private int Time { get; set; }
         [JsonProperty("Points")]
-        public int Points { get; set; }
+        private int Points { get; set; }
         [JsonProperty("QuestionAnswers")]
-        public QuestionAnswers[] QuestionAnswers { get; set; }
+        private List<QuestionAnswers> QuestionAnswers { get; set; }
 
-        public Test(string testName, int time, int points, QuestionAnswers[] questionAnswers)
-        { 
+        public Test()
+        {
+            QuestionAnswers = new List<QuestionAnswers>();
+        }
+
+        public void AddNameTimeAndPointsToTest(string testName, int time, int points)
+        {
             TestName = testName;
             Time = time;
             Points = points;
-            QuestionAnswers = questionAnswers;
         }
 
+        public void AddQuestionAnswersToTest(QuestionAnswers questionAnswers)
+        {
+            QuestionAnswers.Add(questionAnswers);
+        }
     }
 }

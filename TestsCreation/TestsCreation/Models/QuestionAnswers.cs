@@ -8,10 +8,10 @@ namespace TestsCreation.Models
 {
     public class QuestionAnswers
     {
-        public string Question { get; set; }
-        public Respond[] Responds { get; set; }
+        private string Question { get; set; }
+        private List<Respond> Responds { get; set; }
 
-        public QuestionAnswers(string question, Respond[] responds)
+        public QuestionAnswers(string question, List<Respond> responds)
         {
             Question = question;
             Responds = responds;

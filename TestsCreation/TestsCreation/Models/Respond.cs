@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace TestsCreation.Models
 {
     public class Respond
     {
+        [JsonProperty("Boolean")]
         private bool Boolean { get; set; }
+        [JsonProperty("Answer")]
         private string Answer { get; set; }
         
 

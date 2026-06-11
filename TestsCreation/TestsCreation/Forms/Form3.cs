@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestsCreation.Models;
+using TestsCreation.Services;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TestsCreation
@@ -17,11 +18,13 @@ namespace TestsCreation
     public partial class Form3 : Form
     {
         private Test Test;
+        private JsonService JsonService;
 
         public Form3(Test test)
         {
             InitializeComponent();
             Test = test;
+            JsonService = new JsonService();
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -31,14 +34,21 @@ namespace TestsCreation
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var questionAnswers = new QuestionAnswers(textBox1.Text, SelectRespond());
-            Test.AddQuestionAnswersToTest(questionAnswers);
-            Form4 form4 = new Form4();
-            form4.Dock = DockStyle.Fill;
-            form4.TopLevel = false;
-            MainForm.MainPanel.Controls.Clear();
-            MainForm.MainPanel.Controls.Add(form4);
-            form4.Show();
+            label3.ForeColor = Color.Red;
+            label4.ForeColor = Color.Red;
+            label5.ForeColor = Color.Red;
+            if (CheckingTextBox1() & CheckingTextBox2() & CheckSelectedItemInList())
+            {
+                var questionAnswers = new QuestionAnswers(textBox1.Text, SelectRespond());
+                Test.AddQuestionAnswersToTest(questionAnswers);
+                JsonService.JsonServiceSerializeTest(Test);
+                Form4 form4 = new Form4();
+                form4.Dock = DockStyle.Fill;
+                form4.TopLevel = false;
+                MainForm.MainPanel.Controls.Clear();
+                MainForm.MainPanel.Controls.Add(form4);
+                form4.Show();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -59,18 +69,22 @@ namespace TestsCreation
             }
         }
 
-        private bool CheckingTextBox2()
+        private bool CheckSelectedItemInList()
         {
-            if (listBox1.Items.Count == 0)
+            if (listBox1.Items.Count == null || listBox1.Items.Count <= 1)
             {
-                label3.Text = "Add answers";
+                label5.Text = "Add at least 2 answers";
                 return false;
             }
-            label3.Text = "";
+            else if (listBox1.SelectedItem == null )
+            {
+                label5.Text = "Select the item, this will be the correct answer";
+                return false;
+            }
+            label5.Text = "";
             return true;
         }
-        // не можу бути одна відповдіь
-        // Finish test має нажиматись просто так 
+
         private bool CheckingTextBox1()
         {
             if (string.IsNullOrWhiteSpace(textBox1.Text))
@@ -87,39 +101,22 @@ namespace TestsCreation
             return true;
         }
 
-        private bool CheckSelectedItemInList()
+        private bool CheckingTextBox2()
         {
-            if (listBox1.SelectedItem == null)
+            if (AreThereAnyRepeatedWordsInTheList())
             {
-                label5.Text = "Select the item, this will be the correct answer";
+                
                 return false;
             }
-            label5.Text = "";
+            else if (listBox1.Items.Count < 2)
+            {
+                label3.Text = "There must be at least 2 answers.";
+                return false;
+            }
+            label3.Text = "";
             return true;
         }
-
-        private List<Respond> SelectRespond()
-        {
-            List<Respond> respond = new List<Respond>();
-            
-            foreach (var item in listBox1.Items)
-            {
-                if (item == listBox1.SelectedItem.ToString())
-                {
-                    Respond respond1 = new Respond(true, item.ToString());
-                    respond.Add(respond1);
-                }
-                else if (item != listBox1.SelectedItem.ToString())
-                {
-                    Respond respond1 = new Respond(false, item.ToString());
-                    respond.Add(respond1);
-                }
-            }
-            return respond;
-        }
-
-
-
+        //  не може бути одна відповідь
         private void button3_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedItem != null)
@@ -128,13 +125,51 @@ namespace TestsCreation
             }
         }
 
+
         private void button4_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(textBox2.Text))
             {
-                listBox1.Items.Add(textBox2.Text);
-                textBox2.Text = string.Empty;
+                if (!AreThereAnyRepeatedWordsInTheList())
+                {
+                    listBox1.Items.Add(textBox2.Text);
+                    textBox2.Text = string.Empty;
+                }
+                label3.ForeColor = Color.Red;
+                label3.Text = "You cannot add 2 identical answers.";
+                label3.Text = "";
             }
+        }
+
+        private bool AreThereAnyRepeatedWordsInTheList()
+        {
+            foreach (var item in listBox1.Items)
+            {
+                if (listBox1.Items.Count > 0 && textBox2.Text == item.ToString())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        private List<Respond> SelectRespond()
+        {
+            List<Respond> respond = new List<Respond>();
+
+            if (listBox1.SelectedItem == null)
+                return respond;
+
+            foreach (var item in listBox1.Items)
+            {
+                bool isSelected = item.ToString() == listBox1.SelectedItem.ToString();
+
+                Respond respond1 = new Respond(isSelected, item.ToString());
+                respond.Add(respond1);
+            }
+
+            return respond;
         }
     }
 }

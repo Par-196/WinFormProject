@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Serialization;
 
 namespace TestsCreation.Models
 {
@@ -22,6 +23,11 @@ namespace TestsCreation.Models
         public Test()
         {
             QuestionAnswers = new List<QuestionAnswers>();
+        }
+
+        public string ReturnTestName()
+        {
+            return TestName;
         }
 
         public void AddNameTimeAndPointsToTest(string testName, int time, int points)

@@ -20,5 +20,15 @@ namespace TestsCreation.Models
             Boolean = boolean; 
             Answer = answer;
         }
+
+        public bool ReturnBoolean()
+        {
+            return Boolean;
+        }
+
+        public string ReturnAnswer()
+        {
+            return Answer;
+        }
     }
 }

@@ -19,5 +19,16 @@ namespace TestsCreation.Models
             Question = question;
             Responds = responds;
         }
+
+        public string ReturnQuestion()
+        { 
+            return Question;
+        }
+
+        public List<Respond> ReturnResponds()
+        {
+            return Responds;
+        }
+
     }
 }

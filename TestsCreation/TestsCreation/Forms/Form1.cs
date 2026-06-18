@@ -7,16 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TestsCreation.Services;
 
 namespace TestsCreation.Forms
 {
     public partial class Form1 : Form 
     {
         private MainForm mainForm1;
-
+        private JsonService JsonService;
+        
         public Form1()
         {
             InitializeComponent();
+            JsonService = new JsonService();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -36,12 +39,25 @@ namespace TestsCreation.Forms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Form5 form5 = new Form5();
-            form5.Dock = DockStyle.Fill;
-            form5.TopLevel = false;
-            MainForm.MainPanel.Controls.Clear();
-            MainForm.MainPanel.Controls.Add(form5);
-            form5.Show();
+            if (JsonService.AreThereTests())
+            {
+                Form5 form5 = new Form5();
+                form5.Dock = DockStyle.Fill;
+                form5.TopLevel = false;
+                MainForm.MainPanel.Controls.Clear();
+                MainForm.MainPanel.Controls.Add(form5);
+                form5.Show();
+            }
+            else
+            {
+                Form8 form8 = new Form8();
+                form8.Dock = DockStyle.Fill;
+                form8.TopLevel = false;
+                MainForm.MainPanel.Controls.Clear();
+                MainForm.MainPanel.Controls.Add(form8);
+                form8.Show();
+            }
+            
         }
     }
 }

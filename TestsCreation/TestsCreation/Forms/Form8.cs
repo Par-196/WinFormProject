@@ -10,12 +10,16 @@ using System.Windows.Forms;
 
 namespace TestsCreation.Forms
 {
-    public partial class Form7 : Form
+    public partial class Form8 : Form
     {
-        public Form7(int Points)
+        public Form8()
         {
             InitializeComponent();
-            label2.Text = $"Test completed. Scored: {Points}/";
+        }
+
+        private void label_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void button1_Click(object sender, EventArgs e)

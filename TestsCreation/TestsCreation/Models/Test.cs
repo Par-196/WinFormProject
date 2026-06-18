@@ -30,6 +30,16 @@ namespace TestsCreation.Models
             return TestName;
         }
 
+        public int Scoring()
+        {
+            return Points / QuestionAnswers.Count;
+        }
+
+        public List<QuestionAnswers> ReturnQuestionAndAnswers()
+        {
+            return QuestionAnswers;
+        }
+
         public void AddNameTimeAndPointsToTest(string testName, int time, int points)
         {
             TestName = testName;

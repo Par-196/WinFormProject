@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestsCreation.Models;
 using TestsCreation.Services;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TestsCreation
 {
@@ -19,25 +18,18 @@ namespace TestsCreation
     {
         private Test Test;
         private JsonService JsonService;
-
         public Form3(Test test)
         {
             InitializeComponent();
             Test = test;
             JsonService = new JsonService();
         }
-
-        private void Form3_Load(object sender, EventArgs e)
-        {
-            
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             label3.ForeColor = Color.Red;
             label4.ForeColor = Color.Red;
             label5.ForeColor = Color.Red;
-            if (CheckingTextBox1() & CheckingTextBox2() & CheckSelectedItemInList())
+            if (CheckingTextBox1() & CheckSelectedItemInList())
             {
                 var questionAnswers = new QuestionAnswers(textBox1.Text, SelectRespond());
                 Test.AddQuestionAnswersToTest(questionAnswers);
@@ -56,7 +48,7 @@ namespace TestsCreation
             label3.ForeColor = Color.Red;
             label4.ForeColor = Color.Red;
             label5.ForeColor = Color.Red;
-            if (CheckingTextBox1() & CheckingTextBox2() & CheckSelectedItemInList())
+            if (CheckingTextBox1() & CheckSelectedItemInList())
             {
                 var questionAnswers = new QuestionAnswers(textBox1.Text, SelectRespond());
                 Test.AddQuestionAnswersToTest(questionAnswers);
@@ -101,22 +93,7 @@ namespace TestsCreation
             return true;
         }
 
-        private bool CheckingTextBox2()
-        {
-            if (AreThereAnyRepeatedWordsInTheList())
-            {
-                
-                return false;
-            }
-            else if (listBox1.Items.Count < 2)
-            {
-                label3.Text = "There must be at least 2 answers.";
-                return false;
-            }
-            label3.Text = "";
-            return true;
-        }
-        //  не може бути одна відповідь
+        
         private void button3_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedItem != null)
@@ -130,14 +107,12 @@ namespace TestsCreation
         {
             if (!string.IsNullOrWhiteSpace(textBox2.Text))
             {
+                label3.Text = "";
                 if (!AreThereAnyRepeatedWordsInTheList())
                 {
                     listBox1.Items.Add(textBox2.Text);
                     textBox2.Text = string.Empty;
                 }
-                label3.ForeColor = Color.Red;
-                label3.Text = "You cannot add 2 identical answers.";
-                label3.Text = "";
             }
         }
 
@@ -147,6 +122,8 @@ namespace TestsCreation
             {
                 if (listBox1.Items.Count > 0 && textBox2.Text == item.ToString())
                 {
+                    label3.ForeColor = Color.Red;
+                    label3.Text = "You cannot add 2 identical answers";
                     return true;
                 }
             }

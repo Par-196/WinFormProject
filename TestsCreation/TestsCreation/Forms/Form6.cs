@@ -25,38 +25,58 @@ namespace TestsCreation
             InitializeComponent();
             Test = test;
             ShowQuestion();
+            label1.Text = Test.ReturnTestName();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form7 form7 = new Form7(Points);
-            form7.Dock = DockStyle.Fill;
-            form7.TopLevel = false;
-            MainForm.MainPanel.Controls.Clear();
-            MainForm.MainPanel.Controls.Add(form7);
-            form7.Show();
+            if (listBox1.SelectedIndex != -1)
+            {
+                label3.Text = "";
+                if (CheckingTheCorrectAnswer() && currentQuestion < Test.ReturnQuestionAndAnswers().Count)
+                {
+                    Points += Test.Scoring();
+                }
+                Form7 form7 = new Form7(Test, Points);
+                form7.Dock = DockStyle.Fill;
+                form7.TopLevel = false;
+                MainForm.MainPanel.Controls.Clear();
+                MainForm.MainPanel.Controls.Add(form7);
+                form7.Show();
+            }
+            else
+            {
+                label3.ForeColor = Color.Red;
+                label3.Text = "You must choose an answer";
+            }
         }
 
         private void next_Question(object sender, EventArgs e)
         {
-            if (CheckingTheCorrectAnswer() && currentQuestion < Test.ReturnQuestionAndAnswers().Count)
+            if (listBox1.SelectedIndex != -1)
             {
-                Points += Test.Scoring();
-            }
+                label3.Text = "";
+                if (CheckingTheCorrectAnswer())
+                {
+                    Points += Test.Scoring();
+                }
 
-            currentQuestion++;
+                currentQuestion++;
 
-            if (currentQuestion < Test.ReturnQuestionAndAnswers().Count)
-            {
                 ShowQuestion();
+                if (currentQuestion + 1 >= Test.ReturnQuestionAndAnswers().Count)
+                {
+                    button2.Visible = false;
+                }
             }
             else
             {
-                
+                label3.ForeColor = Color.Red;
+                label3.Text = "You must choose an answer";
             }
         }
         
-        private void ShowQuestion()
+        private void ShowQuestion() 
         {
             listBox1.Items.Clear();
 
@@ -84,6 +104,11 @@ namespace TestsCreation
                 }
             }
             return false;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

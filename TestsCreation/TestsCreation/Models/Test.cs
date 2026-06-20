@@ -30,6 +30,11 @@ namespace TestsCreation.Models
             return TestName;
         }
 
+        public int ReturnPoints()
+        {
+            return Points;
+        }
+
         public int Scoring()
         {
             return Points / QuestionAnswers.Count;

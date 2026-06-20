@@ -7,15 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TestsCreation.Models;
 
 namespace TestsCreation.Forms
 {
     public partial class Form7 : Form
     {
-        public Form7(int Points)
+        private Test Test { get; set; }
+        public Form7(Test test, int Points)
         {
             InitializeComponent();
-            label2.Text = $"Test completed. Scored: {Points}/";
+            Test = test;
+            label2.Text = $"Test completed Your scored: {Points}/{test.ReturnPoints()}";
         }
 
         private void button1_Click(object sender, EventArgs e)

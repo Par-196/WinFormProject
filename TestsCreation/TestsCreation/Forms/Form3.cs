@@ -84,9 +84,9 @@ namespace TestsCreation
                 label4.Text = "You must fill in the field";
                 return false;
             }
-            else if (textBox1.Text.Length > 50)
+            else if (textBox1.Text.Length > 100)
             {
-                label4.Text = "The length cannot exceed 50 characters";
+                label4.Text = "The length cannot exceed 100 characters";
                 return false;
             }
             label4.Text = "";

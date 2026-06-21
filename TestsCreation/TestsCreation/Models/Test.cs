@@ -40,6 +40,11 @@ namespace TestsCreation.Models
             return Points / QuestionAnswers.Count;
         }
 
+        public int GetTimeForTimer()
+        {
+            return Time;
+        }
+
         public List<QuestionAnswers> ReturnQuestionAndAnswers()
         {
             return QuestionAnswers;

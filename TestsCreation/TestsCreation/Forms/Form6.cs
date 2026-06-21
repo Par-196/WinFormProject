@@ -1,29 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestsCreation.Forms;
 using TestsCreation.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TestsCreation
 {
     public partial class Form6 : Form
     {
         private Test Test { get; set; }
+        private Timer timer;
+        private int secondsLeft;
         private int Points { get; set; }
         private int currentQuestion = 0;
-
 
         public Form6(Test test)
         {
             InitializeComponent();
             Test = test;
+            TestTimer();
             ShowQuestion();
             label1.Text = Test.ReturnTestName();
         }
@@ -75,8 +70,8 @@ namespace TestsCreation
                 label3.Text = "You must choose an answer";
             }
         }
-        
-        private void ShowQuestion() 
+
+        private void ShowQuestion()
         {
             listBox1.Items.Clear();
 
@@ -109,6 +104,36 @@ namespace TestsCreation
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void TestTimer()
+        {
+            timer = new Timer();
+            secondsLeft = Test.GetTimeForTimer() * 60;
+            timer.Interval = 1000;
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            secondsLeft--;
+
+            int hours = secondsLeft / 3600;
+            int min = (secondsLeft % 3600) / 60;
+            int sec = secondsLeft % 60;
+
+            label4.Text = $"Time: {hours:D2}:{min:D2}:{sec:D2}";
+
+            if (secondsLeft <= 0)
+            {
+                Form7 form7 = new Form7(Test, Points);
+                form7.Dock = DockStyle.Fill;
+                form7.TopLevel = false;
+                MainForm.MainPanel.Controls.Clear();
+                MainForm.MainPanel.Controls.Add(form7);
+                form7.Show();
+            }
         }
     }
 }

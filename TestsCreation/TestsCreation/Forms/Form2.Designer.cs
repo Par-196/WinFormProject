@@ -93,9 +93,9 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.Location = new System.Drawing.Point(36, 159);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 39);
+            this.label2.Size = new System.Drawing.Size(196, 39);
             this.label2.TabIndex = 8;
-            this.label2.Text = "Time";
+            this.label2.Text = "Time in Min";
             // 
             // label3
             // 

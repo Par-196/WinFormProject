@@ -59,7 +59,6 @@
             this.button8 = new System.Windows.Forms.Button();
             this.history_screen = new System.Windows.Forms.Label();
             this.main_screen = new System.Windows.Forms.Label();
-            this.symbol_screen = new System.Windows.Forms.Label();
             this.button11 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -415,7 +414,6 @@
             this.button3.TabIndex = 27;
             this.button3.Text = "MC";
             this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -434,7 +432,6 @@
             this.button4.TabIndex = 28;
             this.button4.Text = "MR";
             this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -453,7 +450,6 @@
             this.button5.TabIndex = 29;
             this.button5.Text = "M+";
             this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -472,7 +468,6 @@
             this.button6.TabIndex = 30;
             this.button6.Text = "M-";
             this.button6.UseVisualStyleBackColor = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
@@ -491,7 +486,6 @@
             this.button7.TabIndex = 31;
             this.button7.Text = "MS";
             this.button7.UseVisualStyleBackColor = false;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
@@ -510,7 +504,6 @@
             this.button8.TabIndex = 32;
             this.button8.Text = "M";
             this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // history_screen
             // 
@@ -521,7 +514,7 @@
             this.history_screen.Location = new System.Drawing.Point(12, 3);
             this.history_screen.Name = "history_screen";
             this.history_screen.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.history_screen.Size = new System.Drawing.Size(293, 30);
+            this.history_screen.Size = new System.Drawing.Size(320, 30);
             this.history_screen.TabIndex = 34;
             this.history_screen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -536,17 +529,6 @@
             this.main_screen.Size = new System.Drawing.Size(324, 36);
             this.main_screen.TabIndex = 33;
             this.main_screen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // symbol_screen
-            // 
-            this.symbol_screen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
-            this.symbol_screen.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.symbol_screen.ForeColor = System.Drawing.SystemColors.Control;
-            this.symbol_screen.Location = new System.Drawing.Point(302, 3);
-            this.symbol_screen.Name = "symbol_screen";
-            this.symbol_screen.Size = new System.Drawing.Size(30, 30);
-            this.symbol_screen.TabIndex = 35;
-            this.symbol_screen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button11
             // 
@@ -584,7 +566,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
             this.ClientSize = new System.Drawing.Size(338, 423);
-            this.Controls.Add(this.symbol_screen);
             this.Controls.Add(this.history_screen);
             this.Controls.Add(this.main_screen);
             this.Controls.Add(this.button8);
@@ -620,7 +601,6 @@
             this.Name = "Calculator";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Calculator_Load);
             this.ResumeLayout(false);
 
         }
@@ -656,7 +636,6 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label history_screen;
         private System.Windows.Forms.Label main_screen;
-        public System.Windows.Forms.Label symbol_screen;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button9;
     }

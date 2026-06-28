@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
-        {
+{
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -514,7 +514,7 @@
             this.history_screen.Location = new System.Drawing.Point(12, 3);
             this.history_screen.Name = "history_screen";
             this.history_screen.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.history_screen.Size = new System.Drawing.Size(320, 43);
+            this.history_screen.Size = new System.Drawing.Size(323, 43);
             this.history_screen.TabIndex = 34;
             this.history_screen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -565,7 +565,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
-            this.ClientSize = new System.Drawing.Size(338, 456);
+            this.ClientSize = new System.Drawing.Size(340, 456);
             this.Controls.Add(this.history_screen);
             this.Controls.Add(this.main_screen);
             this.Controls.Add(this.button8);
@@ -601,6 +601,7 @@
             this.Name = "Calculator";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Calculator_Load);
             this.ResumeLayout(false);
 
         }

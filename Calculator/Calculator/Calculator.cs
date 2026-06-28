@@ -21,6 +21,8 @@ namespace Calculator
         private double secondNumber;
         private char action = ' ';
         private bool calculationCompleted;
+        private bool wasItDividedByOne;
+        private bool percentWasCalculated;
 
         public Calculator()
         {
@@ -30,6 +32,7 @@ namespace Calculator
 
         private void number_zero_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 0;
@@ -37,6 +40,7 @@ namespace Calculator
 
         private void number_one_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 1; 
@@ -44,6 +48,7 @@ namespace Calculator
 
         private void number_two_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 2;
@@ -51,6 +56,7 @@ namespace Calculator
 
         private void number_three_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 3;
@@ -58,6 +64,7 @@ namespace Calculator
 
         private void number_four_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 4;
@@ -65,6 +72,7 @@ namespace Calculator
 
         private void number_five_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 5;
@@ -72,14 +80,15 @@ namespace Calculator
 
         private void number_six_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 6;
-
         }
 
         private void number_seven_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 7;
@@ -87,6 +96,7 @@ namespace Calculator
 
         private void number_eight_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 8;
@@ -94,6 +104,7 @@ namespace Calculator
 
         private void number_nine_Click(object sender, EventArgs e)
         {
+            Error();
             EraseTheMainField();
             ClearAllFields();
             main_screen.Text += 9;
@@ -105,6 +116,11 @@ namespace Calculator
             history_screen.Text = "";
             firstNumber = 0;
             secondNumber = 0;
+            action = ' ';
+            calculationCompleted = false;
+            mainScreenIsClear = false;
+            wasItDividedByOne = false;
+            percentWasCalculated = false;
         }
 
         private void clear_entry_button_Click(object sender, EventArgs e)
@@ -115,6 +131,7 @@ namespace Calculator
 
         private void equals_button_Click(object sender, EventArgs e)
         {
+            Error();
             RemoveComma();
             if (!calculationCompleted)
             {
@@ -122,9 +139,21 @@ namespace Calculator
             }
             CalculationOfFields();
         }
-        
+
+        private void Error()
+        {
+            if (main_screen.Text == "Cannot divide by 0" || main_screen.Text == "Invalid input")
+            {
+                main_screen.Text = "0";
+                history_screen.Text = "";
+                firstNumber = 0;
+                secondNumber = 0;
+            }
+        }
+
         private void comma_button_Click(object sender, EventArgs e)
         {
+            Error();
             if (!FindAComma())
             {
                 main_screen.Text += ",";
@@ -162,31 +191,63 @@ namespace Calculator
                 calculationCompleted = false;
                 main_screen.Text = "";
                 history_screen.Text = "";
+                action = ' ';
             }
         }
 
         private void EraseTheMainField()
         {
-            if (main_screen.Text.Length > 1 && main_screen.Text[0] == '0' && main_screen.Text[1] == ',')
-                return;
-            else if (mainScreenIsClear || main_screen.Text[0] == '0')
+            if (main_screen.Text.Length >= 2 && main_screen.Text[0] == '0' && main_screen.Text[1] == ',')
+                return; 
+            else if (mainScreenIsClear || main_screen.Text == "0")
             {
                 main_screen.Text = "";
                 mainScreenIsClear = false;
-             }
+            }
         }
 
         private void swap_symbol_button_Click(object sender, EventArgs e)
         {
-            if (FindAComma())
+            Error();
+            if (string.IsNullOrEmpty(main_screen.Text) || main_screen.Text == "-")
+                return;
+            string secondRoot;
+            string newStringWithoutRoot;
+
+            if (DoesHistoryScreenContainRootSymbol())
             {
-                main_screen.Text = $"{(-decimal.Parse(main_screen.Text))}";
+                if (action == ' ')
+                {
+                    firstNumber = -firstNumber;
+                    history_screen.Text = $"negate({history_screen.Text})";
+                }
+                else
+                {
+                    secondNumber = -secondNumber;
+
+                    (secondRoot, newStringWithoutRoot) = CutSecondRoot();
+
+                    history_screen.Text = newStringWithoutRoot + $"negate({secondRoot})";
+                }
             }
-            else
-            {
-                main_screen.Text = (-decimal.Parse(main_screen.Text)).ToString();
-            }  
+
+            main_screen.Text = (-double.Parse(main_screen.Text)).ToString();
         }
+
+        private (string secondRoot, string newStringWithoutRoot) CutSecondRoot()
+        {
+            int index = history_screen.Text.LastIndexOf(' ');
+
+            if (index == -1)
+                return (history_screen.Text, "");
+
+            string secondRoot = history_screen.Text.Substring(index + 1);
+            string newStringWithoutRoot = history_screen.Text.Substring(0, index + 1);
+
+            return (secondRoot, newStringWithoutRoot);
+        }
+
+
 
         private void backspace_button_Click(object sender, EventArgs e)
         {
@@ -212,7 +273,7 @@ namespace Calculator
         private void add_button_Click(object sender, EventArgs e)
         {
             action = '+';
-               SetOperation();
+            SetOperation();
         }
 
         private void subtract_button_Click(object sender, EventArgs e)
@@ -235,27 +296,40 @@ namespace Calculator
 
         private void SetOperation()
         {
+            Error();
             RemoveComma();
-            if (DoesHistoryScreenContainAction())
+
+            if(percentWasCalculated)
+            {
+                CalculationOfFields();
+                percentWasCalculated = false;
+            }
+            else if (wasItDividedByOne)
+            {
+                history_screen.Text = $"{main_screen.Text} {action} ";
+                main_screen.Text = "0";
+                wasItDividedByOne = false;
+                percentWasCalculated = false;
+            }
+            else if (DoesHistoryScreenContainAction())
             {
                 secondNumber = double.Parse(main_screen.Text);
+                percentWasCalculated = false;
                 CalculationOfFields();
-            }
-            else if (DoesHistoryScreenContainRootSymbol())
-            {
-                mainScreenIsClear = true;
-                history_screen.Text += $" {action} ";
             }
             else if (history_screen.Text != "")
             {
-                secondNumber = double.Parse(main_screen.Text);
-                CalculationOfFields();
+                firstNumber = double.Parse(main_screen.Text);
+                history_screen.Text += $" {action} ";
+                mainScreenIsClear = true;
+                percentWasCalculated = false;
             }
             else
             {
-                mainScreenIsClear = true;
                 firstNumber = double.Parse(main_screen.Text);
-                history_screen.Text = $"{main_screen.Text} {action}";
+                history_screen.Text = $"{main_screen.Text} {action} ";
+                mainScreenIsClear = true;
+                percentWasCalculated = false;
             }
         }
 
@@ -296,15 +370,23 @@ namespace Calculator
 
             if (DoesHistoryScreenContainRootSymbol())
             {
-                if (!history_screen.Text.EndsWith(" ="))
+                if (history_screen.Text.EndsWith($"{action} "))
                 {
-                    history_screen.Text += " =";
+                    history_screen.Text += $"{secondNumber} =";
+                }
+                else if (!history_screen.Text.EndsWith(" ="))
+                {
+                    history_screen.Text += $" =";
                 }
                 else
                 {
-                    history_screen.Text = $"{result} {action} {secondNumber} =";
+                    history_screen.Text = $"{firstNumber} {action} {secondNumber} =";
                 }
             }
+            else
+                {
+                    history_screen.Text = $"{firstNumber} {action} {secondNumber} =";
+                }
 
             firstNumber = result;
             main_screen.Text = result.ToString();
@@ -347,43 +429,80 @@ namespace Calculator
 
         private void percent_button_Click(object sender, EventArgs e)
         {
-            decimal main_number = decimal.Parse(main_screen.Text);
-            decimal history_number = decimal.Parse(history_screen.Text);
-            decimal total_number = history_number * main_number / 100;
-            history_screen.Text += $"{total_number.ToString()}";
-            main_screen.Text = total_number.ToString();
+            Error();
+
+            if (action == ' ')
+            {
+                secondNumber = 0;
+                history_screen.Text = "0";
+                main_screen.Text = "0";
+                percentWasCalculated = true;
+                return;
+            }
+
+            secondNumber = double.Parse(main_screen.Text);
+
+            switch (action)
+            {
+                case '+':
+                case '-':
+                    secondNumber = firstNumber * secondNumber / 100;
+                    break;
+
+                case '*':
+                case '/':
+                    secondNumber /= 100;
+                    break;
+            }
+
+            history_screen.Text += secondNumber;
+            main_screen.Text = secondNumber.ToString();
+            percentWasCalculated = true;
         }
 
-        
+
 
 
         private void square_root_button_Click_1(object sender, EventArgs e)
-                         {
+        {
+            Error();
+
+            double number = double.Parse(main_screen.Text);
+
+            // БАГ ВИПРАВЛЕНО: корінь з від'ємного числа — показуємо помилку
+            if (number < 0)
+            {
+                main_screen.Text = "Invalid input";
+                return;
+            }
+
+            double root = Math.Sqrt(number);
+
             mainScreenIsClear = true;
-            if (history_screen.Text != "" && !DoesHistoryScreenContainRootSymbol())
+            main_screen.Text = root.ToString();
+
+            if (action == ' ')
             {
-                history_screen.Text += $"√({main_screen.Text})";
-                secondNumber = Math.Sqrt(double.Parse(main_screen.Text));
-                main_screen.Text = secondNumber.ToString();
+                firstNumber = root;
+                history_screen.Text = $"√({number})";
             }
-            else if (history_screen.Text != "" && DoesHistoryScreenContainRootSymbol() && action == ' ')
+            else
             {
-                history_screen.Text = $" √({history_screen.Text})";
-                firstNumber = Math.Sqrt(double.Parse(main_screen.Text));
-                main_screen.Text = firstNumber.ToString();
+                secondNumber = root;
+                string beforeSecondNumber = CutSecondNumberFromHistory();
+                history_screen.Text = beforeSecondNumber + $"√({number})";
             }
-            else  if (DoesHistoryScreenContainRootSymbol() && action != ' ')
-            {
-                history_screen.Text += $"√({main_screen.Text})";    
-                secondNumber = Math.Sqrt(double.Parse(main_screen.Text));
-                main_screen.Text = secondNumber.ToString();
-            }
-            else if (history_screen.Text == "")
-            {
-                history_screen.Text += $"√({main_screen.Text})";
-                firstNumber = Math.Sqrt(double.Parse(main_screen.Text));
-                main_screen.Text = firstNumber.ToString();
-            }
+            mainScreenIsClear = true;
+        }
+
+        private string CutSecondNumberFromHistory()
+        {
+            int index = history_screen.Text.LastIndexOf(' ');
+
+            if (index == -1)
+                return "";
+
+            return history_screen.Text.Substring(0, index + 1);
         }
 
         private bool DoesHistoryScreenContainRootSymbol()
@@ -391,17 +510,63 @@ namespace Calculator
             return history_screen.Text.Contains('√');
         }
 
-        
 
 
         private void Squaring(object sender, EventArgs e)
         {
-            decimal main_screen_number = decimal.Parse(main_screen.Text);
-            main_screen_number *= main_screen_number;
-            main_screen.Text = main_screen_number.ToString();
+            Error();
+
+            double number = double.Parse(main_screen.Text);
+            double squared = number * number;
+
+            if (action == ' ')
+            {
+                firstNumber = squared;
+                history_screen.Text = $"sqr({number})";
+            }
+            else
+            {
+                secondNumber = squared;
+                string beforeSecondNumber = CutSecondNumberFromHistory();
+                history_screen.Text = beforeSecondNumber + $"sqr({number})";
+            }
+
+            main_screen.Text = squared.ToString();
+            mainScreenIsClear = true;
         }
 
         private void Reciprocal_Click(object sender, EventArgs e)
+        {
+            Error();
+
+            if (main_screen.Text == "0")
+            {
+                main_screen.Text = "Cannot divide by 0";
+                return;
+            }
+
+            double number = double.Parse(main_screen.Text);
+            double reciprocal = 1 / number;
+
+            if (action == ' ')
+            {
+                firstNumber = reciprocal;
+                history_screen.Text = $"1/({number})";
+            }
+            else
+            {
+                secondNumber = reciprocal;
+                string beforeSecondNumber = CutSecondNumberFromHistory();
+                history_screen.Text = beforeSecondNumber + $"1/({number})";
+            }
+
+            main_screen.Text = reciprocal.ToString();
+            wasItDividedByOne = true;
+            percentWasCalculated = true;
+            mainScreenIsClear = true;
+        }
+
+        private void Calculator_Load(object sender, EventArgs e)
         {
 
         }

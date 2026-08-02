@@ -12,7 +12,7 @@ namespace TestsCreation
         private Timer timer;
         private int secondsLeft;
         private int Points { get; set; }
-        private int currentQuestion = 0;
+        private int currentQuestion = 1;
 
         public Form6(Test test)
         {
@@ -21,6 +21,10 @@ namespace TestsCreation
             TestTimer();
             ShowQuestion();
             label1.Text = Test.ReturnTestName();
+            if (currentQuestion >= Test.ReturnQuestionAndAnswers().Count)
+            {
+                button2.Visible = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -59,7 +63,7 @@ namespace TestsCreation
                 currentQuestion++;
 
                 ShowQuestion();
-                if (currentQuestion + 1 >= Test.ReturnQuestionAndAnswers().Count)
+                if (currentQuestion >= Test.ReturnQuestionAndAnswers().Count)
                 {
                     button2.Visible = false;
                 }
@@ -75,7 +79,7 @@ namespace TestsCreation
         {
             listBox1.Items.Clear();
 
-            var question = Test.ReturnQuestionAndAnswers()[currentQuestion];
+            var question = Test.ReturnQuestionAndAnswers()[currentQuestion - 1];
 
             label2.Text = question.ReturnQuestion();
 
@@ -134,6 +138,11 @@ namespace TestsCreation
                 MainForm.MainPanel.Controls.Add(form7);
                 form7.Show();
             }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
